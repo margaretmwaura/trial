@@ -22,10 +22,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyServiceHolder myServiceHolder = new MyServiceHolder();
         SharedPreferences settings = getSharedPreferences("PREFS", this.MODE_PRIVATE);
         String token = settings.getString("token", null);
-        OkHttpClient okHttpClient = new OkHttpClientInstance.Builder(this)
-                .addHeader("Authorization", token)
+
+        OkHttpClient okHttpClient = new OkHttpClientInstance.Builder(this,myServiceHolder)
                 .build();
 
         api_service myService = new retrofit2.Retrofit.Builder()
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onFailure(Call<List<AirPort>> call, Throwable t)
                     {
-                        Log.d("Airports", "Nothing gotten");
+                        Log.d("Airports", "Nothing gotten" + t.getMessage());
                     }
                 }
         );
