@@ -17,6 +17,7 @@ public class TokenAuthenticator implements Authenticator
 
     private Context context;
     private MyServiceHolder myServiceHolder;
+    public static int flag = 1;
 
     public TokenAuthenticator(Context context,MyServiceHolder myServiceHolder) {
         this.context = context;
@@ -38,24 +39,39 @@ public class TokenAuthenticator implements Authenticator
                 .build()
                 .create(api_service.class);
 
-            retrofit2.Response retrofitResponse = myService.refreshToken("y24hefr24xhbbbda3zy7dt4d", "5Q26e5Ged8", "client_credentials").execute();
-            RetrofitResponse myResponse = (RetrofitResponse) retrofitResponse.body();
-            String accssToken = myResponse.getAccessToken();
+        if(flag == 1) {
+             retrofit2.Response retrofitResponse = myService.refreshToken("y24hefr24xhbbbda3zy7dt4d", "5Q26e5Ged8", "client_credentials").execute();
+             RetrofitResponse myResponse = (RetrofitResponse) retrofitResponse.body();
+             String accssToken = myResponse.getAccessToken();
 
-            if (accssToken != null) {
-                Log.d("TokenAuthenticator", "The retrofit response " + accssToken);
-                SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
-                SharedPreferences.Editor edit = settings.edit();
-                edit.putString("token", myResponse.getAccessToken());
-                edit.apply();
+             if (accssToken != null)
+             {
+                 Log.d("TokenAuthenticator", "The retrofit response " + accssToken);
+                 SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
+                 SharedPreferences.Editor edit = settings.edit();
+                 edit.putString("token", myResponse.getAccessToken());
+                 edit.apply();
 
-                Log.d("AccessToken", "End of getting the access token");
-                return response.request().newBuilder()
-                        .header("Authorization", "Bearer" + accssToken)
-                        .build();
-            }
-            return null;
+                 flag = 0;
 
+                 Log.d("AccessToken", "End of getting the access token");
+                 return response.request().newBuilder()
+                         .header("Authorization", "Bearer"+accssToken)
+                         .build();
+             }
+
+         }
+         else
+        {
+            SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
+            String token = settings.getString("token", null);
+            return response.request().newBuilder()
+                    .header("Authorization", "Bearer"+token)
+                    .build();
+        }
+       Log.d("Authenticator","Havent called the token again");
+
+       return null;
 
     }
 }

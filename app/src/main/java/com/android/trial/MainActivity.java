@@ -27,29 +27,32 @@ public class MainActivity extends AppCompatActivity
         String token = settings.getString("token", null);
 
         OkHttpClient okHttpClient = new OkHttpClientInstance.Builder(this,myServiceHolder)
-                .addHeader("Authorization", "Bearer" + token)
+                .addHeader("Authorization", "Bearer"+token)
+                .addHeader("X-Originating-IP", "102.167.112.54")
                 .build();
 
         Log.d("MainActivity","MainActivy we are back");
 
         api_service myService = new retrofit2.Retrofit.Builder()
-                .baseUrl("https://api.lufthansa.com/v1/")
+                .baseUrl("https://api.lufthansa.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
                 .create(api_service.class);
 
-        Call<List<AirPort>> call = myService.getAirportItems();
+        Call<AirportResource> call = myService.getAirportItems();
         call.enqueue(
-                new Callback<List<AirPort>>() {
+                new Callback<AirportResource>() {
                     @Override
-                    public void onResponse(Call<List<AirPort>> call, Response<List<AirPort>> response)
+                    public void onResponse(Call<AirportResource> call, Response<AirportResource> response)
                     {
-                        Log.d("Airports", "Them airports have been gotten ");
+                        Log.d("Airports", "Them airports have been gotten " + response.body());
+
+
                     }
 
                     @Override
-                    public void onFailure(Call<List<AirPort>> call, Throwable t)
+                    public void onFailure(Call<AirportResource> call, Throwable t)
                     {
                         Log.d("Airports", "Nothing gotten" + t.getMessage());
                     }

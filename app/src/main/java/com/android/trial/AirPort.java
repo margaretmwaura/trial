@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AirPort implements Parcelable
+public class AirPort
 {
 
     @SerializedName("AirportCode")
@@ -21,17 +21,6 @@ public class AirPort implements Parcelable
         countryCode = in.readString();
     }
 
-    public static final Creator<AirPort> CREATOR = new Creator<AirPort>() {
-        @Override
-        public AirPort createFromParcel(Parcel in) {
-            return new AirPort(in);
-        }
-
-        @Override
-        public AirPort[] newArray(int size) {
-            return new AirPort[size];
-        }
-    };
 
     public String getAirportCode()
     {
@@ -58,15 +47,5 @@ public class AirPort implements Parcelable
         this.countryCode = countryCode;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(airportCode);
-        dest.writeString(cityCode);
-        dest.writeString(countryCode);
-    }
 }
