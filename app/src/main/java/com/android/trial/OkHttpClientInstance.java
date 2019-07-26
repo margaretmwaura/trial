@@ -35,17 +35,20 @@ public class OkHttpClientInstance
             return this;
         }
 
-        public OkHttpClient build() {
+        public OkHttpClient build()
+        {
             TokenAuthenticator authenticator = new TokenAuthenticator(context,myServiceHolder);
 
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                     .addInterceptor(
                             new Interceptor() {
                                 @Override
-                                public Response intercept(Interceptor.Chain chain) throws IOException {
+                                public Response intercept(Interceptor.Chain chain) throws IOException
+                                {
                                     // Add default headers
                                     Request.Builder requestBuilder = chain.request().newBuilder();
 
+                                    Log.d("OkhhtPClientInstance","we are in the client now");
                                         SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
                                         String token = settings.getString("token", null);
 
@@ -63,10 +66,7 @@ public class OkHttpClientInstance
                                     return chain.proceed(requestBuilder.build());
                                 }
                             }
-                    ).connectTimeout(20, TimeUnit.SECONDS)
-                    .writeTimeout(20, TimeUnit.SECONDS)
-
-                    .readTimeout(30, TimeUnit.SECONDS);
+                    );
 
 
             okHttpClientBuilder.authenticator(authenticator);

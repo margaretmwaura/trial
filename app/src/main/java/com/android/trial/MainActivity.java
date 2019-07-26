@@ -27,7 +27,10 @@ public class MainActivity extends AppCompatActivity
         String token = settings.getString("token", null);
 
         OkHttpClient okHttpClient = new OkHttpClientInstance.Builder(this,myServiceHolder)
+                .addHeader("Authorization", "Bearer" + token)
                 .build();
+
+        Log.d("MainActivity","MainActivy we are back");
 
         api_service myService = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://api.lufthansa.com/v1/")

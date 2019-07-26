@@ -30,25 +30,26 @@ public class TokenAuthenticator implements Authenticator
             return null;
         }
 
+        Log.d("Authenticator","Starting authenticator");
+
         api_service myService = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://api.lufthansa.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(api_service.class);
 
-        retrofit2.Response retrofitResponse = myService.refreshToken("y24hefr24xhbbbda3zy7dt4d" ,"5Q26e5Ged8","client_credentials").execute();
-            RetrofitResponse myResponse  = (RetrofitResponse) retrofitResponse.body();
+            retrofit2.Response retrofitResponse = myService.refreshToken("y24hefr24xhbbbda3zy7dt4d", "5Q26e5Ged8", "client_credentials").execute();
+            RetrofitResponse myResponse = (RetrofitResponse) retrofitResponse.body();
             String accssToken = myResponse.getAccessToken();
 
-            if(accssToken != null)
-            {
+            if (accssToken != null) {
                 Log.d("TokenAuthenticator", "The retrofit response " + accssToken);
                 SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = settings.edit();
-                edit.putString("Token", myResponse.getAccessToken());
-                edit.commit();
+                edit.putString("token", myResponse.getAccessToken());
+                edit.apply();
 
-                Log.d("AccessToken","End of getting the access token");
+                Log.d("AccessToken", "End of getting the access token");
                 return response.request().newBuilder()
                         .header("Authorization", "Bearer" + accssToken)
                         .build();
