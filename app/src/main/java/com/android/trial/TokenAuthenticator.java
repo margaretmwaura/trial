@@ -33,20 +33,22 @@ public class TokenAuthenticator implements Authenticator
 
         Log.d("Authenticator","Starting authenticator");
 
-        api_service myService = new retrofit2.Retrofit.Builder()
-                .baseUrl("https://api.lufthansa.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(api_service.class);
 
-        if(flag == 1) {
+        if(flag == 1)
+        {
+            api_service myService = new retrofit2.Retrofit.Builder()
+                    .baseUrl("https://api.lufthansa.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(api_service.class);
+
              retrofit2.Response retrofitResponse = myService.refreshToken("y24hefr24xhbbbda3zy7dt4d", "5Q26e5Ged8", "client_credentials").execute();
              RetrofitResponse myResponse = (RetrofitResponse) retrofitResponse.body();
-             String accssToken = myResponse.getAccessToken();
+             String accessToken = myResponse.getAccessToken();
 
-             if (accssToken != null)
+             if (accessToken != null)
              {
-                 Log.d("TokenAuthenticator", "The retrofit response " + accssToken);
+                 Log.d("TokenAuthenticator", "The retrofit response " + accessToken);
                  SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
                  SharedPreferences.Editor edit = settings.edit();
                  edit.putString("token", myResponse.getAccessToken());
@@ -56,17 +58,20 @@ public class TokenAuthenticator implements Authenticator
 
                  Log.d("AccessToken", "End of getting the access token");
                  return response.request().newBuilder()
-                         .header("Authorization", "Bearer"+accssToken)
+                         .header("Authorization","Bearer "+accessToken)
                          .build();
              }
 
          }
          else
         {
+            Log.d("AuthenticationToken","Authentication token had alrady been set");
             SharedPreferences settings = context.getSharedPreferences("PREFS", context.MODE_PRIVATE);
+
             String token = settings.getString("token", null);
+            Log.d("Token","This is the token" + token);
             return response.request().newBuilder()
-                    .header("Authorization", "Bearer"+token)
+                    .header("Authorization", "Bearer "+token)
                     .build();
         }
        Log.d("Authenticator","Havent called the token again");

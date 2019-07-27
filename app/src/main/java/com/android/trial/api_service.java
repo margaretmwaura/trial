@@ -21,8 +21,8 @@ public interface api_service
     Call <RetrofitResponse>refreshToken(@Field("client_id") String client_id , @Field("client_secret") String client_secret , @Field("grant_type") String path);
 
     @Headers("Accept: application/json")
-    @GET("v1/mds-references/airports/TXL?limit=20&offset=0&LHoperated=0")
-    Call<AirportResource> getAirportItems();
+    @GET("v1/references/airports/TXL?limit=20&offset=0&LHoperated=0")
+    Call<AirportResourceModel> getAirportItems();
 
 
 }

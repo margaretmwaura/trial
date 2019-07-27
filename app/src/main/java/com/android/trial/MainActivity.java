@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity
         String token = settings.getString("token", null);
 
         OkHttpClient okHttpClient = new OkHttpClientInstance.Builder(this,myServiceHolder)
-                .addHeader("Authorization", "Bearer"+token)
-                .addHeader("X-Originating-IP", "102.167.112.54")
+                .addHeader("Authorization", "Bearer "+token)
+//                .addHeader("X-Originating-IP", "102.167.112.54")
                 .build();
 
         Log.d("MainActivity","MainActivy we are back");
@@ -40,19 +40,22 @@ public class MainActivity extends AppCompatActivity
                 .build()
                 .create(api_service.class);
 
-        Call<AirportResource> call = myService.getAirportItems();
+        Call<AirportResourceModel> call = myService.getAirportItems();
         call.enqueue(
-                new Callback<AirportResource>() {
+                new Callback<AirportResourceModel>() {
                     @Override
-                    public void onResponse(Call<AirportResource> call, Response<AirportResource> response)
+                    public void onResponse(Call<AirportResourceModel> call, Response<AirportResourceModel> response)
                     {
                         Log.d("Airports", "Them airports have been gotten " + response.body());
-
+                        Airports airports = response.body().getAirportResource().getAirports() ;
+                        AirPort airPort = airports.getAirPortLists();
+                        Log.d("Airports","This is the size of the airport list gotten" + airPort.getCityCode());
+                        Log.d("Airports","This  is another property of the airport " + airPort.getCityCode() + airPort.getCountryCode() + airPort.getAirportCode());
 
                     }
 
                     @Override
-                    public void onFailure(Call<AirportResource> call, Throwable t)
+                    public void onFailure(Call<AirportResourceModel> call, Throwable t)
                     {
                         Log.d("Airports", "Nothing gotten" + t.getMessage());
                     }

@@ -39,7 +39,10 @@ public class OkHttpClientInstance
         {
             TokenAuthenticator authenticator = new TokenAuthenticator(context,myServiceHolder);
 
-            OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+            OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS);
 //                    .addInterceptor(
 //                            new Interceptor() {
 //                                @Override
