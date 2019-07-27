@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity","MainActivy we are back");
 
         api_service myService = new retrofit2.Retrofit.Builder()
-                .baseUrl("https://api.lufthansa.com/")
+                .baseUrl("https://api.lufthansa.com/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity
                     {
                         Log.d("Airports", "Them airports have been gotten " + response.body());
                         Airports airports = response.body().getAirportResource().getAirports() ;
-                        AirPort airPort = airports.getAirPortLists();
-                        Log.d("Airports","This is the size of the airport list gotten" + airPort.getCityCode());
-                        Log.d("Airports","This  is another property of the airport " + airPort.getCityCode() + airPort.getCountryCode() + airPort.getAirportCode());
+                        airPortList = airports.getAirPortLists();
+                        Log.d("Size","This is the size of the airport list " + airPortList.size());
+//                        Log.d("Airports","This is the size of the airport list gotten" + airPort.getCityCode());
+//                        Log.d("Airports","This  is another property of the airport " + airPort.getCityCode() + airPort.getCountryCode() + airPort.getAirportCode());
 
                     }
 

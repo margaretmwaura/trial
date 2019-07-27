@@ -9,17 +9,17 @@ public class Airports
 {
 
     @SerializedName("Airport")
-    AirPort airPorts;
+    List<AirPort> airPorts;
 
-    public Airports(AirPort airPorts) {
+    public Airports(List<AirPort> airPorts) {
         this.airPorts = airPorts;
     }
 
-    public AirPort getAirPortLists() {
+    public List<AirPort> getAirPortLists() {
         return airPorts;
     }
 
-    public void setAirPortsList(AirPort airPorts) {
+    public void setAirPortsList(List<AirPort> airPorts) {
         this.airPorts = airPorts;
     }
 }
